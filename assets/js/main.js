@@ -28,9 +28,9 @@
 				}, 0);
 			});
 
-		// Touch mode.
-			if (skel.vars.mobile)
-				$body.addClass('is-touch');
+		// // Touch mode.
+		// 	if (skel.vars.mobile)
+		// 		$body.addClass('is-touch');
 
 		// Fix: Placeholder polyfill.
 			$('form').placeholder();
@@ -92,8 +92,7 @@
 
 		// Parallax.
 		// Disabled on IE (choppy scrolling) and mobile platforms (poor performance).
-			if (skel.vars.browser == 'ie'
-			||	skel.vars.mobile) {
+			if (skel.vars.browser == 'ie') {
 
 				$.fn._parallax = function() {
 
