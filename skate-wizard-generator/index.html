@@ -1,141 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Get your Skate Wizard here!</title>
-    <style>
-        #main {
-            display: flex;
-            flex-direction: column;
-        }
-    </style>
+    <title>Skate Wizard Generator</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
-<div id="header">
-    <h1>Get your Skate Wizard here!</h1>
-    <button id="reroll">Reroll!</button>
-</div>
-<div id="main">
 
-</div>
-
-<body></body>
-<script>
-    const permanentSpells = ['Ramp', 'Sidewalk', 'Rail'];
-
-    const getDice = (d) => {
-        return Array.from({ length: d }, (_, i) => i + 1);
-    };
-
-    const getRandomElement = (arr) => {
-        return arr[Math.floor(Math.random() * arr.length)];
-    };
-
-    const roll = (n, d) => {
-        const dice = getDice(d);
-        const rolls = [];
-        let sum = 0;
-
-        for (let i = 0; i < n; i++) {
-            rolls.push(getRandomElement(dice));
-        }
-
-        rolls.forEach(roll => sum += roll);
-
-        return {
-            rolls,
-            sum
-        }
-    };
-
-    const getAbilities = () => {
-        const abilityScores = [
-            [2, 1, 0],
-            [2, 0, 1],
-            [1, 2, 0],
-            [0, 2, 1],
-            [1, 0, 2],
-            [0, 1, 2]
-        ]
-
-        const abilities = getRandomElement(abilityScores);
-
-        return {
-            strength: abilities[0],
-            dexterity: abilities[1],
-            will: abilities[2]
-        }
-    };
-
-    const getRandoSpell = () => {
-        const randoSpells = [
-            ['Awesome', 'Busted', 'Dope', 'Epic', 'Gnarly', 'Hyped', 'Janky', 'Killer', 'Psyched', 'Rad', 'Sketchy', 'Stoked'],
-            ['Animating', 'Attracting', 'Bewildering', 'Concealing', 'Consuming', 'Crushing', 'Duplicating', 'Expanding', 'Revealing', 'Sealing', 'Shielding', 'Summoning'],
-            ['Acid', 'Air', 'Dust', 'Earth', 'Fire', 'Light', 'Reflection', 'Shadow', 'Smoke', 'Sound', 'Spirit', 'Water'],
-            ['Armor', 'Boot', 'Bread', 'Bucket', 'Chain', 'Door', 'Hammer', 'Lute', 'Mattress', 'Tower', 'Tree', 'Well']
-        ];
-
-        return randoSpells.map(wordList => getRandomElement(wordList)).join(' ');
-    };
-
-    const getBootLegSpell = () => {
-        const bootlegSpells = ['Mattress', 'Wannabe', 'Trailblaze', 'Sweet Jamz', 'High Times', 'Gleam the Cube'];
-
-        return getRandomElement(bootlegSpells);
-    }
-
-    const getItems = () => {
-        const allItems = ['Staff or Wand', 'Skate Key', 'Smoking Pipe', 'Shield', 'Melee Weapon', 'Ranged Weapon', 'Lore from Yore', 'Lockpicking Tools', 'Oil Flask', 'Rope', 'Torch & Tinder', 'Ball Bearings']
-        const selectedItems = [];
-
-        while (selectedItems.length < 3) {
-            const rolleedItem = getRandomElement(allItems);
-
-            if (!selectedItems.includes(rolleedItem)) {
-                selectedItems.push(rolleedItem);
-            }
-        }
-
-        return selectedItems;
-    }
-
-    const rollChar = () => {
-        const mainDiv = document.querySelector('#main');
-
-        while (mainDiv.firstChild) {
-            mainDiv.removeChild(mainDiv.lastChild);
-        }
-
-        const abilities = getAbilities();
-        const fields = [];
-        
-        Object.entries(abilities).forEach(([ability, score]) => {
-            fields.push({ name: ability, value: score });
-        });
-
-        fields.push({ name: 'Rando Spell', value: getRandoSpell() });
-        fields.push({ name: 'Bootleg Spell', value: getBootLegSpell() });
-
-        const items = getItems();
-       
-        items.forEach((item, idx) => {
-            fields.push({ name: `item${idx + 1}`, value: item });     
-        });
-
-        fields.forEach((field) => {
-            const { name, value } = field;
-            const element = document.createElement('span');
-            element.innerHTML = `${name}: ${value}`;
-            mainDiv.appendChild(element);
-        });
-
-    };
-
-    const rerollButton = document.querySelector('#reroll');
-    rerollButton.addEventListener('click', rollChar);
-
-    rollChar();
-</script>
+<body>
+    <div id='root'>
+        <h1>A Skate Wizards Generator</h1>
+        <button id='roll-btn'>Bail out!</button>
+        <div id='info-bar'>
+            <p>HP: 4</p>
+            <p>Defense: 6</p>
+        </div>
+        <div id='sections'>
+        </div>
+    </div>
+</body>
 
 </html>
+<script src='index.js'></script>
