@@ -30,9 +30,9 @@ const RANDO_SPELLS = [
 ];
 
 const PERMANENT_SPELLS = [
-    {name: 'Ramp', description: 'A magical ramp about the size of a park bench appears below your skateboard.' },
-    {name: 'Sidewalk', description: 'A magical sidewalk appears directly below your board.' },
-    {name: 'Rail', description: 'A magical rail about as long and tall as a picnic table appears below your skateboard.' }
+    { name: 'Ramp', description: 'A magical ramp about the size of a park bench appears below your skateboard.' },
+    { name: 'Sidewalk', description: 'A magical sidewalk appears directly below your board.' },
+    { name: 'Rail', description: 'A magical rail about as long and tall as a picnic table appears below your skateboard.' }
 ];
 
 const getDice = (d) => {
@@ -97,13 +97,13 @@ const clearSectionDiv = () => {
     const sectionsDiv = document.getElementById('sections');
 
     while (sectionsDiv.firstChild) {
-      sectionsDiv.removeChild(sectionsDiv.lastChild);
+        sectionsDiv.removeChild(sectionsDiv.lastChild);
     }
 }
 
 const createDiv = (section, id, header) => {
     let sectionEl = document.querySelector(`#${section}`);
-    
+
     if (!sectionEl) {
         const sectionsDiv = document.querySelector('#sections');
         sectionEl = document.createElement('div');
@@ -113,7 +113,7 @@ const createDiv = (section, id, header) => {
 
     const divEl = document.createElement('div');
     const headerEl = document.createElement('h2');
-    
+
     divEl.id = id;
     headerEl.innerHTML = header;
     divEl.appendChild(headerEl);
@@ -144,10 +144,10 @@ const createLi = (ul, key, value) => {
 };
 
 const populateAbilities = () => {
-    const abilitiesDiv = createDiv('section-top', 'ability-scores', 'Abilities');
+    const abilitiesDiv = createDiv('sections', 'ability-scores', 'Abilities');
     const ul = createUl(abilitiesDiv);
     const abilities = getAbilities();
-    
+
     Object.entries(abilities).forEach(([ability, score]) => {
         createLi(ul, ability, score);
     });
@@ -155,7 +155,7 @@ const populateAbilities = () => {
 };
 
 const populatePermSpells = () => {
-    const permSpellsDiv = createDiv('section-top', 'perm-spells', 'Permanent Spells');
+    const permSpellsDiv = createDiv('sections', 'perm-spells', 'Permanent Spells');
     const ul = createUl(permSpellsDiv);
 
     PERMANENT_SPELLS.forEach(({ description, name }) => {
@@ -164,7 +164,7 @@ const populatePermSpells = () => {
 };
 
 const populateItems = () => {
-    const itemsDiv = createDiv('section-top', 'items', 'Items');
+    const itemsDiv = createDiv('sections', 'items', 'Items');
     const ul = createUl(itemsDiv);
     const items = getItems();
 
@@ -175,7 +175,7 @@ const populateItems = () => {
 };
 
 const populateRandoSpell = () => {
-    const randoSpellDiv = createDiv('section-bottom', 'rando-spell', 'Rando Spell');
+    const randoSpellDiv = createDiv('sections', 'rando-spell', 'Rando Spell');
     const ul = createUl(randoSpellDiv);
 
     const randoSpell = RANDO_SPELLS.map(wordList => getRandomElement(wordList)).join(' ');
@@ -184,12 +184,51 @@ const populateRandoSpell = () => {
 };
 
 const populateBootlegSpell = () => {
-    const randoSpellDiv = createDiv('section-bottom', 'bootleg-spell', 'Bootleg Spell');
+    const randoSpellDiv = createDiv('sections', 'bootleg-spell', 'Bootleg Spell');
     const ul = createUl(randoSpellDiv);
 
     const { name, description } = getRandomElement(BOOTLEG_SPELLS);
 
     createLi(ul, name, description);
+};
+
+const isOnTop = (div1, div2) => {
+    console.log(`checking if ${div1.id} is on top of ${div2.id}`);
+    const div1Bottom = Math.floor(div1.getBoundingClientRect().bottom);
+    console.log(`${div1.id} bottom = ${div1Bottom}`);
+    const div2Top = Math.floor(div2.getBoundingClientRect().top);
+    console.log(`${div2.id} top = ${div2Top}`);
+    const onTop = div1Bottom <= div2Top;
+
+    if (onTop) {
+        console.log('SHOULD BE ON TOP');
+    }
+
+    return onTop;
+};
+
+const isToTheLeft = (div1, div2) => {
+    return div1.getBoundingClientRect().right <= div2.getBoundingClientRect().left;
+};
+
+const setBorders = () => {
+    const divs = ['ability-scores', 'perm-spells', 'items', 'rando-spell', 'bootleg-spell'].map(id => document.querySelector(`#${id}`));
+
+    divs.forEach((div) => {
+        const otherDivs = divs.filter(divEl => divEl.id !== div.id);
+        div.classList.remove('bottom-border');
+        div.classList.remove('right-border');
+
+        if (otherDivs.some(otherDiv => isOnTop(div, otherDiv))) {
+            // div.setAttribute('style', `border-bottom: ${border}`);
+            div.classList.add('bottom-border');
+        }
+
+        if (otherDivs.some(otherDiv => isToTheLeft(div, otherDiv))) {
+            // div.setAttribute('style', `border-right: ${border}`);
+            div.classList.add('right-border');
+        }
+    });
 };
 
 const populate = () => {
@@ -202,11 +241,17 @@ const populate = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('resize', () => {
+        console.log('window resized!');
+        setBorders();
+    });
+
     const bailOutBtn = document.querySelector('#roll-btn');
-    
+
     bailOutBtn.addEventListener('click', () => {
         populate();
     });
-    
+
     populate();
+    setBorders();
 });

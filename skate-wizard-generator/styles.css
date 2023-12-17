@@ -16,7 +16,8 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     
-    max-width: 1280px;
+    max-width: 1356px;
+    min-width: 320px;
     margin: 0 auto;
     padding: 2rem;
 }
@@ -33,13 +34,17 @@ h1 {
     margin-bottom: 10px;
 }
 
+h2 {
+    margin: 5px;
+    text-align: center;
+}
+
 ul {
     list-style: none;
 }
 
-#sections {
-    display: flex;
-    flex-direction: column;
+div {
+    min-width: 320px;
 }
 
 #info-bar {
@@ -51,27 +56,36 @@ ul {
     border-bottom: 2px solid #333A3F;
 }
 
-#section-top {
-    display: flex;
-    flex-direction: row;
-    min-height: 320px;
+.bottom-border {
+    border-bottom: 1px solid #333A3F;
 }
 
-#ability-scores {
-    display: flex;
-    flex-direction: column;
+.right-border {
     border-right: 1px solid #333A3F;
 }
 
-h2 {
-    margin: 5px;
-    text-align: center;
+#sections {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
 }
 
-#ability-scores ul {
-    margin-top: 5px;
+.info-div {
+    display: flex;
+    width: 450px;
+    flex-direction: column;
+    min-height: 320px;
+    max-height: 355px;
+}
+
+.info-div > ul {
     margin-left: 5px;
     padding: 0px;
+}
+
+.key-span {
+    font-weight: bold;
+    margin-right: 10px;
 }
 
 #ability-scores li {
@@ -80,21 +94,7 @@ h2 {
     padding: 0px;
     justify-content: space-between;
     margin-right: 5px;
-    min-width: 80px;
     max-width: 100px;
-}
-
-#perm-spells {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-#perm-spells ul {
-    display: flex;
-    flex-direction: column;
-    margin-left: 5px;
-    padding: 0px;
 }
 
 #perm-spells li {
@@ -103,50 +103,10 @@ h2 {
     justify-content: flex-start;
 }
 
-#items {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    border-left: 1px solid #333A3F;
-}
-
-#items ul {
-    display: flex;
-    flex-direction: column;
-    margin-left: 5px;
-    padding: 0px;
-}
-
 #items li {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-}
-
-.key-span {
-    font-weight: bold;
-    margin-right: 10px;
-}
-
-.info-div {
-    min-width: 450px;
-}
-
-#section-bottom {
-    display: flex;
-    flex-direction: row;
-    min-height: 320px;
-    border-top: 1px solid #333A3F;
-    align-content: center;
-    justify-content: center;
-}
-
-#rando-spell {
-    border-right: 1px solid #333A3F;
-}
-
-#bootleg-spell {
-    max-width: 320px;
 }
 
 #roll-btn {
