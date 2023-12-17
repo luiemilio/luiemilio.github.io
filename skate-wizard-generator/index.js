@@ -73,9 +73,9 @@ const getAbilities = () => {
     const abilities = getRandomElement(abilityScores);
 
     return {
-        strength: abilities[0],
-        dexterity: abilities[1],
-        will: abilities[2]
+        'Strength': abilities[0],
+        'Dexterity': abilities[1],
+        'Will': abilities[2]
     }
 };
 
@@ -93,12 +93,16 @@ const getItems = () => {
     return selectedItems;
 };
 
-const clearSectionDiv = () => {
-    const sectionsDiv = document.getElementById('sections');
+const clearDiv = (divId) => {
+    const div = divId = document.querySelector(`#${divId}`);
 
-    while (sectionsDiv.firstChild) {
-        sectionsDiv.removeChild(sectionsDiv.lastChild);
+    while (div.firstChild) {
+        div.removeChild(div.lastChild);
     }
+};
+
+const clearDivs = () => {
+    ['sections', 'stats-bar'].forEach(clearDiv);
 }
 
 const createDiv = (section, id, header) => {
@@ -192,23 +196,27 @@ const populateBootlegSpell = () => {
     createLi(ul, name, description);
 };
 
+populateInfoBar = () => {
+    const infoBarDiv = document.querySelector('#stats-bar');
+    const ul = createUl(infoBarDiv);
+    
+    const startingStats = {
+        'HP': 4,
+        'Defense': 6,
+        'Attack Bonus': 0
+    };
+    
+    Object.entries(startingStats).forEach(([stat, value]) => {
+        createLi(ul, stat, value);
+    });
+};
+
 const isOnTop = (div1, div2) => {
-    console.log(`checking if ${div1.id} is on top of ${div2.id}`);
-    const div1Bottom = Math.floor(div1.getBoundingClientRect().bottom);
-    console.log(`${div1.id} bottom = ${div1Bottom}`);
-    const div2Top = Math.floor(div2.getBoundingClientRect().top);
-    console.log(`${div2.id} top = ${div2Top}`);
-    const onTop = div1Bottom <= div2Top;
-
-    if (onTop) {
-        console.log('SHOULD BE ON TOP');
-    }
-
-    return onTop;
+    return Math.floor(div1.getBoundingClientRect().bottom) <= Math.floor(div2.getBoundingClientRect().top);
 };
 
 const isToTheLeft = (div1, div2) => {
-    return div1.getBoundingClientRect().right <= div2.getBoundingClientRect().left;
+    return Math.floor(div1.getBoundingClientRect().right) <= Math.floor(div2.getBoundingClientRect().left);
 };
 
 const setBorders = () => {
@@ -220,19 +228,18 @@ const setBorders = () => {
         div.classList.remove('right-border');
 
         if (otherDivs.some(otherDiv => isOnTop(div, otherDiv))) {
-            // div.setAttribute('style', `border-bottom: ${border}`);
             div.classList.add('bottom-border');
         }
 
         if (otherDivs.some(otherDiv => isToTheLeft(div, otherDiv))) {
-            // div.setAttribute('style', `border-right: ${border}`);
             div.classList.add('right-border');
         }
     });
 };
 
 const populate = () => {
-    clearSectionDiv();
+    clearDivs();
+    populateInfoBar();
     populateAbilities();
     populatePermSpells();
     populateItems();
@@ -242,7 +249,6 @@ const populate = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
-        console.log('window resized!');
         setBorders();
     });
 
