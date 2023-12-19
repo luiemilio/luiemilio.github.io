@@ -245,6 +245,7 @@ const populate = () => {
     populateItems();
     populateRandoSpell();
     populateBootlegSpell();
+    setBorders();
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -259,5 +260,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     populate();
-    setBorders();
 });
